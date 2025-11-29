@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Api.Data;
 using TaskManager.Api.Entities;
+using TaskManager.Api.Repositories;
 
-namespace TaskManager.Api.Repositories;
-
-public class TaskRepository
+public class TaskRepository : ITaskRepository
 {
     private readonly CosmosDbContext _context;
 

@@ -13,10 +13,10 @@ namespace TaskManager.Api.Controllers;
 [Authorize]
 public class TasksController : ControllerBase
 {
-    private readonly TaskRepository _tasks;
+    private readonly ITaskRepository _tasks;
     private readonly AiService _ai;
 
-    public TasksController(TaskRepository tasks, AiService ai)
+    public TasksController(ITaskRepository tasks, AiService ai)
     {
         _tasks = tasks;
         _ai = ai;
