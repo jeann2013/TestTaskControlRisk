@@ -13,6 +13,9 @@ public class UserRepository
     public async Task<User?> GetByEmail(string email) =>
         await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
 
+    public async Task<User?> GetById(int id) =>
+        await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
     public async Task Add(User user)
     {
         _db.Users.Add(user);

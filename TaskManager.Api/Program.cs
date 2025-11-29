@@ -107,6 +107,7 @@ builder.Services.AddAuthorization(options =>
 // DI
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<TaskRepository>();
+builder.Services.AddScoped<RefreshTokenRepository>();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<AiService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();

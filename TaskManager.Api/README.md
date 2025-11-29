@@ -119,8 +119,8 @@ https://localhost:7179/swagger
 ### Qué puedes hacer en Swagger:
 
 * Registrar usuario (`POST /auth/register`)
-* Iniciar sesión (`POST /auth/login`)
-* Obtener token JWT
+* Iniciar sesión (`POST /auth/login`) - Devuelve access token + refresh token
+* Refrescar tokens (`POST /auth/refresh`) - Renueva access token usando refresh token
 * Enviar token para:
 
   * Listar tareas
@@ -154,6 +154,58 @@ TaskManager.Api/
 ```
 
 ---
+
+# 🔐 Autenticación JWT con Refresh Tokens
+
+Este backend implementa **JWT con refresh tokens** para una autenticación segura y renovable.
+
+### 📝 Flujo de autenticación:
+
+1. **Login** → Obtienes access token (15 min) + refresh token (7 días)
+2. **Usar API** → Envías access token en header `Authorization: Bearer {token}`
+3. **Token expira** → Usas refresh token para obtener nuevos tokens
+4. **Logout/seguridad** → Refresh tokens se revocan automáticamente
+
+### 🚀 Endpoints de autenticación:
+
+#### Login
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Respuesta:**
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken": "base64-encoded-random-string",
+  "accessTokenExpiresAt": "2025-11-29T15:15:00Z",
+  "refreshTokenExpiresAt": "2025-12-06T15:00:00Z"
+}
+```
+
+#### Refresh Tokens
+```http
+POST /auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "base64-encoded-random-string"
+}
+```
+
+**Respuesta:** Nuevos tokens (mismo formato que login)
+
+### ⚠️ Notas de seguridad:
+- Access tokens expiran en **15 minutos**
+- Refresh tokens expiran en **7 días**
+- Cada login revoca tokens anteriores
+- Cada refresh genera nuevo refresh token y revoca el anterior
 
 # 🧠 IA en el Backend
 

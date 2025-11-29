@@ -8,4 +8,5 @@ public class SqlDbContext : DbContext
     public SqlDbContext(DbContextOptions<SqlDbContext> options) : base(options) { }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 }
