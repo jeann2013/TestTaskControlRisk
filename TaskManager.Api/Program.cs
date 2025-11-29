@@ -8,6 +8,19 @@ using TaskManager.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var MyCorsPolicy = "_myCorsPolicy";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyCorsPolicy, policy =>
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .WithOrigins("http://localhost:5173");
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -96,8 +109,13 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<TaskRepository>();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<AiService>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+
 
 var app = builder.Build();
+
+app.UseCors(MyCorsPolicy);
+
 
 if (app.Environment.IsDevelopment())
 {

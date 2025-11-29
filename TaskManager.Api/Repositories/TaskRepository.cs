@@ -26,21 +26,21 @@ public class TaskRepository : ITaskRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task Add(TaskItem item)
+    public async Task Add(TaskItem task)
     {
-        _context.Tasks.Add(item);
+        _context.Tasks.Add(task);
         await _context.SaveChangesAsync();
     }
 
-    public async Task Update(TaskItem item)
+    public async Task Update(TaskItem task)
     {
-        _context.Tasks.Update(item);
+        _context.Tasks.Update(task);
         await _context.SaveChangesAsync();
     }
 
-    public async Task Delete(TaskItem item)
+    public async Task Delete(TaskItem task)
     {
-        _context.Tasks.Remove(item);
+        _context.Tasks.Remove(task);
         await _context.SaveChangesAsync();
     }
 }
