@@ -102,7 +102,7 @@ public class TasksController : ControllerBase
     }
 
     [HttpPatch("{id}/complete")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> Complete(string id)
     {
         var task = await _tasks.GetById(id, UserId);
