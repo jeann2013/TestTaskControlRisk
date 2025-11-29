@@ -123,7 +123,7 @@ https://localhost:7179/swagger
 * Refrescar tokens (`POST /auth/refresh`) - Renueva access token usando refresh token
 * Enviar token para:
 
-  * Listar tareas
+  * Listar tareas con paginación (`GET /tasks?page=1&pageSize=10`)
   * Crear tarea
   * Completar tarea
   * Analizar tarea con IA (`POST /tasks/analyze`)
@@ -206,6 +206,65 @@ Content-Type: application/json
 - Refresh tokens expiran en **7 días**
 - Cada login revoca tokens anteriores
 - Cada refresh genera nuevo refresh token y revoca el anterior
+
+# 📄 Paginación en Listado de Tareas
+
+El endpoint `GET /tasks` incluye **paginación completa** para manejar listas grandes de tareas eficientemente.
+
+### 📋 Parámetros de consulta:
+
+```http
+GET /tasks?page=1&pageSize=10
+```
+
+| Parámetro | Tipo | Default | Descripción |
+|-----------|------|---------|-------------|
+| `page` | int | 1 | Número de página (empieza en 1) |
+| `pageSize` | int | 10 | Elementos por página (máximo 50) |
+
+### 📤 Respuesta paginada:
+
+```json
+{
+  "data": [
+    {
+      "id": "task-1",
+      "userId": "user123",
+      "title": "Tarea de ejemplo",
+      "description": "Descripción...",
+      "priority": "pending",
+      "subtasks": []
+    }
+  ],
+  "page": 1,
+  "pageSize": 10,
+  "totalCount": 25,
+  "totalPages": 3,
+  "hasNextPage": true,
+  "hasPreviousPage": false
+}
+```
+
+### 📊 Metadata incluida:
+- `page`: Página actual
+- `pageSize`: Elementos por página
+- `totalCount`: Total de tareas del usuario
+- `totalPages`: Páginas totales
+- `hasNextPage`: Si hay página siguiente
+- `hasPreviousPage`: Si hay página anterior
+
+### 💡 Ejemplos de uso:
+
+```bash
+# Primera página, 10 elementos
+GET /tasks?page=1&pageSize=10
+
+# Página 2, 20 elementos por página
+GET /tasks?page=2&pageSize=20
+
+# Sin parámetros (usa defaults: page=1, pageSize=10)
+GET /tasks
+```
 
 # 🧠 IA en el Backend
 

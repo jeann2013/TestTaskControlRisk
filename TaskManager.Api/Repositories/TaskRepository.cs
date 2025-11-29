@@ -19,6 +19,21 @@ public class TaskRepository : ITaskRepository
             .ToListAsync();
     }
 
+    public async Task<(List<TaskItem> Items, int TotalCount)> GetByUserPaginated(string userId, int page, int pageSize)
+    {
+        var query = _context.Tasks.Where(t => t.UserId == userId);
+
+        var totalCount = await query.CountAsync();
+
+        var items = await query
+            .OrderByDescending(t => t.Id) // Ordenar por ID descendente (más recientes primero)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, totalCount);
+    }
+
     public async Task<TaskItem?> GetById(string id, string userId)
     {
         return await _context.Tasks

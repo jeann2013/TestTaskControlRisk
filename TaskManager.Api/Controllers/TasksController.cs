@@ -28,10 +28,19 @@ public class TasksController : ControllerBase
 
 
     [HttpGet]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get([FromQuery] PaginationParams pagination)
     {
-        var result = await _tasks.GetByUser(UserId);
-        return Ok(result);
+        var (items, totalCount) = await _tasks.GetByUserPaginated(UserId, pagination.Page, pagination.PageSize);
+
+        var response = new PaginatedResponse<TaskItem>
+        {
+            Data = items,
+            Page = pagination.Page,
+            PageSize = pagination.PageSize,
+            TotalCount = totalCount
+        };
+
+        return Ok(response);
     }
 
     [HttpPost]
